@@ -433,6 +433,17 @@ over for free, `jbl-bridge` carries a per-model table: `MODELS` is keyed by
 Fast Pair model id, picks the notify/write handles, and a model not listed
 keeps the TUNE230NC handles on which the protocol was first confirmed.
 
+Its Fast Pair Message Stream announces the same three DEVICE_INFO frames as
+every other pair here, unprompted on every channel open: model id `ea59a0`,
+then the session's current BLE address, then battery `03 03 00 03 32 3c 64` —
+left 50%, right 60%, case 100%, none charging — verbatim in
+[`docs/captures/jbl-wave-buds-2-fastpair.txt`](docs/captures/jbl-wave-buds-2-fastpair.txt).
+The `08 11 00 00` Hearable Control probe got no reply, as documented. The BLE
+address frame is the one the widget's reader republishes and the excelpoint
+bridge dials; across today's sessions it read `64:F7:09:7F:E2:9D`,
+`72:36:C8:11:D2:7F`, `67:6D:C6:10:DE:5F`, `4A:02:E4:49:B0:65` and
+`48:DD:7D:82:61:F8` at different times.
+
 Reconnect recovery is evidence now too: five Bluetooth disconnect/connect
 cycles in a row each re-announced the earbuds' current BLE address and the
 mode row came back on its own (all `anc`, no manual refresh), see
