@@ -29,6 +29,18 @@
         { "cycle": 4, "disconnected": true, "mode": "anc", "recoveredWithoutManual": true, "bleAddress": "4A:02:E4:49:B0:65" },
         { "cycle": 5, "disconnected": true, "mode": "anc", "recoveredWithoutManual": true, "bleAddress": "4A:02:E4:49:B0:65" }
       ]
+    },
+    {
+      "context": "post-fix, same device, after the Fast Pair probe capture",
+      "when": "2026-09-18T13:18:35Z/13:21:52Z",
+      "what": "the current address 4A:02:E4:49:B0:65 (confirmed live by the probe minutes earlier) refused attaches; the widget cycled eight bridge attempts against it, ~20 s apart (a new bridge PID each), re-announcing the same address every time the transient exit reopened the channel",
+      "modeRow": "cycled pending <-> unsupported for ~3 minutes"
+    },
+    {
+      "context": "same window, recovery",
+      "when": "2026-09-18T13:21:52Z/13:22:02Z",
+      "what": "one bluetoothctl reconnect announced the next rotated address 48:DD:7D:82:61:F8; the bridge dialed it and the row came up 10 s later",
+      "modeRow": "anc, stable"
     }
   ],
   "behavior": [
