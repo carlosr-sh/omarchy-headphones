@@ -346,8 +346,10 @@ What the bridge's exit code means, because the answer to "does this model speak
 the protocol" is only some of the ways it can end:
 
 - **1, transient** — the link never opened, was refused, or closed under the
-  bridge. That says nothing about the device, so nothing is written down and the
-  service tries again after 10 seconds, then 20, then 40, up to five minutes.
+  bridge. That says nothing about the device, so nothing is written down; the
+  service asks the reader to reopen the device's Fast Pair channel, which makes
+  the earbuds announce the BLE address they currently hold, then tries again
+  after 10 seconds, then 20, then 40, up to five minutes.
 - **3, linked but silent** — connected, discovered, asked, heard nothing. The
   bridge records one miss against the Fast Pair model id in
   `$XDG_STATE_HOME/omaphones/mode-support.json` and the service leaves that model
@@ -430,6 +432,14 @@ Because the handles differ and the model id is the only thing a connect hands
 over for free, `jbl-bridge` carries a per-model table: `MODELS` is keyed by
 Fast Pair model id, picks the notify/write handles, and a model not listed
 keeps the TUNE230NC handles on which the protocol was first confirmed.
+
+Reconnect recovery is evidence now too: five Bluetooth disconnect/connect
+cycles in a row each re-announced the earbuds' current BLE address and the
+mode row came back on its own (all `anc`, no manual refresh), see
+[`docs/captures/jbl-wave-buds-2-reconnect-recovery.json`](docs/captures/jbl-wave-buds-2-reconnect-recovery.json).
+A rotation mid-session still leaves the announced address stale for the next
+attempt, which is what exit 1 above covers: the service reopens the channel
+and the earbuds announce the address they actually hold.
 
 ## Sony MDR v2 — the listening mode on the WH-CH720N
 
