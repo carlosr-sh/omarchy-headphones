@@ -1012,6 +1012,21 @@ Deno.test("controlBackend picks oppo from the HeyMelody UUID", () => {
 
 // Canonical owner records: complete bluetoothctl output, not a guessed UUID list.
 const canonical = JSON.parse(await Deno.readTextFile(new URL('fixtures/canonical.json', import.meta.url)));
+// The Life Q30's own record, as bluetoothctl printed it: the complete list,
+// not a hand-picked pair. Its vendor UUID carries the brand prefix with the
+// model's own tail, and nothing else in the record may take the device first.
+Deno.test('captured Life Q30 record selects the soundcore bridge', async () => {
+  const record = await Deno.readTextFile(
+    new URL('../docs/captures/soundcore-life-q30-bluetoothctl.txt', import.meta.url));
+  const ids = Model.uuidsFromBluetoothctl(record);
+  assertEquals(ids.length, 8, 'complete captured UUID list');
+  assertEquals(Model.controlBackend(ids, ''), 'soundcore');
+  assertEquals(Model.controlBackend([...ids].reverse(), ''), 'soundcore');
+  assertEquals(Model.controlBackend(ids.map(id => id.toUpperCase()), ''), 'soundcore');
+  assertEquals(Model.bridgeArgs('soundcore', { address: '88:0E:85:5F:64:B4' }),
+               ['88:0E:85:5F:64:B4']);
+});
+
 Deno.test('canonical Sony and JBL SDP records select their own bridge', async () => {
   for (const [brand, fixture] of Object.entries(canonical)) {
     const record = await Deno.readTextFile(new URL('../' + fixture.uuid_capture, import.meta.url));

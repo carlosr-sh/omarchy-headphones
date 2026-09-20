@@ -68,20 +68,20 @@ CMD_SOUND_MODES_SET = (0x06, 0x81)
 # tests/soundcore_bridge_test.py pins every row's outbound frames.
 #
 #   offset   where the sound-mode bytes sit in the 01 01 state payload
-#   width    how many bytes that block has. Six is the usual: mode, then four
-#            fields, then the ambient level. The Life Q30 has four, and reading
-#            six there would take two bytes of the firmware string that follows
-#            and post them back as parameters on the next write
+#   width    how many bytes that block has, six when a row does not say: mode,
+#            then four fields, then the ambient level. The Life Q30 has four,
+#            and reading six there would take two bytes of the firmware string
+#            that follows and post them back as parameters on the next write
 #   query    ask 06 01 for those bytes after the state, and again after
 #            each write; its reply stands over whatever the offset produced
 MODELS = {
     # Space 2 — Sovego, PR #3. Never asked 06 01: it emits one unprompted
     # after a mode change, but whether it answers a request is untested.
-    "d1402": {"name": "Space 2", "offset": 71, "width": 6, "query": False},
+    "d1402": {"name": "Space 2", "offset": 71, "query": False},
     # Space One Pro (A3062) — sasiruLK, PR #5. The six bytes sit two to the
     # left, the width OpenSCQ30's A3062 parser gives the fields ahead of them,
     # and a request for 06 01 is answered.
-    "b3062": {"name": "Space One Pro", "offset": 69, "width": 6, "query": True},
+    "b3062": {"name": "Space One Pro", "offset": 69, "query": True},
     # Life Q30 (A3028) — Kevin, verified on hardware 2026-09-18. The state
     # payload is 70 bytes with the block at 35, and it is four bytes wide:
     # [mode, noise-cancelling mode, 2 more], with the firmware string starting
@@ -92,7 +92,7 @@ MODELS = {
 }
 # A model nobody has held is read at the Space 2's offset and then asked, so
 # a block that sits elsewhere is corrected by the reply before anyone clicks.
-UNKNOWN = {"name": "", "offset": 71, "width": 6, "query": True}
+UNKNOWN = {"name": "", "offset": 71, "query": True}
 
 MODE_FROM_BYTE = {0x00: "anc", 0x01: "ambient", 0x02: "off"}
 BYTE_FROM_MODE = {name: byte for byte, name in MODE_FROM_BYTE.items()}

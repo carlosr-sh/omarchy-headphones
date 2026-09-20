@@ -119,7 +119,12 @@ class Link:
                     mode_name = MODE_NAME.get(body[71], "unknown(%d)" % body[71])
                     print("%s <<< STATE: mode=%s params=%s" % (stamp(), mode_name, bytes(body[71:77]).hex()), flush=True)
                 else:
-                    print("%s <<< STATE (short payload: %d bytes)" % (stamp(), len(body)), flush=True)
+                    # Short for the offset this tool reads, not short of
+                    # meaning: a model whose block sits earlier answers here,
+                    # and hiding its payload hides the only evidence of where
+                    # the block is. The Life Q30's state is 70 bytes.
+                    print("%s <<< STATE (%d bytes, shorter than offset 71) %s"
+                          % (stamp(), len(body), body.hex()), flush=True)
             elif cmd == CMD_SOUND_MODES_NOTIFY:
                 mode_name = MODE_NAME.get(body[0] if body else -1, "unknown")
                 print("%s <<< NOTIFY: mode=%s body=%s" % (stamp(), mode_name, body.hex()), flush=True)
@@ -157,6 +162,9 @@ def main():
 
     plan = [
         ("req_state", make_packet(CMD_STATE_UPDATE)),
+        # Ask for the sound modes as well: a device that answers 06 01 says
+        # where its block is without anyone guessing an offset.
+        ("req_sound_modes", make_packet(CMD_SOUND_MODES_NOTIFY)),
     ]
     if wanted is not None:
         body = [SET_BYTE[wanted], 0x1F, 0xFF, 0x00, 0x00, 0x01]

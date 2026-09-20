@@ -1,6 +1,6 @@
 {
   "model": "Soundcore Life Q30",
-  "owner": "Kevin",
+  "owner": "kevinbsr",
   "bridge": "soundcore-bridge",
   "notes": "Vendor UUID suffix b302a (A3028), captured on hardware 2026-09-18. The state payload is 70 bytes and the sound-mode block sits at 35, four bytes wide: mode, noise-cancelling mode, and two more. The firmware string starts at 39, so a six-byte read would take '0' and '5' from it and post them back as parameters on the next write. 06 01 is answered with the same four bytes. No ambient level and no wind switch, so the row reports neither.",
   "session": {
@@ -103,5 +103,6 @@
       ],
       "note": "the two lines the panel saw: no level and no voice on either"
     }
-  ]
+  ],
+  "capture": "docs/captures/soundcore-life-q30.txt"
 }
