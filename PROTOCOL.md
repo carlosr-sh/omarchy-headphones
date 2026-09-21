@@ -1302,6 +1302,14 @@ tools/soundcore_probe.py 84:9D:4B:B0:2D:00
 tools/soundcore_probe.py 84:9D:4B:B0:2D:00 5 set:ambient
 ```
 
+It asks for the state (`01 01`) and the sound modes (`06 01`) and prints both.
+A `set:` writes the device's own sound-mode bytes back with only the mode
+replaced — the `06 01` reply, as wide as it came up to six bytes — then asks
+both questions again. A device that did not answer `06 01` is not written to,
+except the Space 2, whose block is known to sit at offset 71 of its state.
+Until 1.3.8 the probe sent a fixed `1f ff 00 00 01` after the mode, which is
+what overwrote two fields on the Life Q30 below.
+
 
 
 ### Space One Pro (A3062) — the same protocol, six bytes further left
