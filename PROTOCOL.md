@@ -452,6 +452,12 @@ A rotation mid-session still leaves the announced address stale for the next
 attempt, which is what exit 1 above covers: the service reopens the channel
 and the earbuds announce the address they actually hold.
 
+The reopen was also run on the TUNE230NC, ten forced exit 1 with and without
+it: one reopen per exit, the mode back as fast as before, battery rows kept,
+no audio dropout, see
+[`docs/captures/jbl-tune230nc-tws-exit1-channel-cycle.txt`](docs/captures/jbl-tune230nc-tws-exit1-channel-cycle.txt).
+An address rotating in the middle of a session was not caught there.
+
 ## Sony MDR v2 — the listening mode on the WH-CH720N
 
 A different headset and a different protocol, on a channel Sony serves itself:
