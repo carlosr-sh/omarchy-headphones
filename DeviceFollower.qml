@@ -715,9 +715,10 @@ Item {
       // the Message Stream channel reopens. Backing off against the same dead
       // address keeps it down for minutes, so ask the reader to cycle this
       // device's channel; if the address rotated, onBleAddressChanged bounces
-      // the bridge straight to the live one.
+      // the bridge straight to the live one. cycleChannel, not refreshReader:
+      // a reader that is down stays on its own backoff.
       if (exitCode === 1 && follower.service)
-        follower.service.refreshReader(follower.address)
+        follower.service.cycleChannel(follower.address)
       ancRestart.restart()
     }
   }

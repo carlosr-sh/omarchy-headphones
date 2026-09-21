@@ -347,9 +347,9 @@ the protocol" is only some of the ways it can end:
 
 - **1, transient** — the link never opened, was refused, or closed under the
   bridge. That says nothing about the device, so nothing is written down; the
-  service asks the reader to reopen the device's Fast Pair channel, which makes
-  the earbuds announce the BLE address they currently hold, then tries again
-  after 10 seconds, then 20, then 40, up to five minutes.
+  service asks the reader, if it is running, to reopen the device's Fast Pair
+  channel, which makes the earbuds announce the BLE address they currently
+  hold, then tries again after 10 seconds, then 20, then 40, up to five minutes.
 - **3, linked but silent** — connected, discovered, asked, heard nothing. The
   bridge records one miss against the Fast Pair model id in
   `$XDG_STATE_HOME/omaphones/mode-support.json` and the service leaves that model
